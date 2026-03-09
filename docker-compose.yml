@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: apptrack-postgres
+    environment:
+      POSTGRES_DB: apptrack
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - apptrack-data:/var/lib/postgresql/data
+
+volumes:
+  apptrack-data:
