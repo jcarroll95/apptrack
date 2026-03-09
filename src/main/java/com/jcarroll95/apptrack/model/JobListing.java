@@ -39,6 +39,8 @@ public class JobListing {
 
     private String title;
     private String url;
+
+    @Enumerated(EnumType.STRING)
     private JobRole roleType;
 
     public enum JobRole {
@@ -49,6 +51,7 @@ public class JobListing {
         OTHER
     }
 
+    @Enumerated(EnumType.STRING)
     private ExperienceLevel experienceLevel;
 
     public enum ExperienceLevel {

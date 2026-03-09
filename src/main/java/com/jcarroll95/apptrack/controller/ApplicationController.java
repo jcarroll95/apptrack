@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/applications")
@@ -32,5 +34,15 @@ public class ApplicationController {
         return applicationRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/summary")
+    public Map<String, Long> getStageSummary() {
+        return applicationRepository.findAll()
+                .stream()
+                .collect(Collectors.groupingBy(
+                        a -> a.getCurrentStage() != null ? a.getCurrentStage().toString() : "UNKNOWN",
+                        Collectors.counting()
+                ));
     }
 }

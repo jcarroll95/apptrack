@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AppTrack</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #0f1117;
+            color: #e2e8f0;
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 24px 32px;
+            border-bottom: 1px solid #1e2535;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: #7c9ef8;
+        }
+
+        .cohort-selector {
+            padding: 20px 32px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid #1e2535;
+        }
+
+        .cohort-btn {
+            padding: 6px 16px;
+            border-radius: 6px;
+            border: 1px solid #1e2535;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .cohort-btn.active {
+            background: #1e2d4a;
+            border-color: #7c9ef8;
+            color: #7c9ef8;
+        }
+
+        .main {
+            padding: 24px 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .panel {
+            background: #161b27;
+            border: 1px solid #1e2535;
+            border-radius: 10px;
+            padding: 20px 24px;
+        }
+
+        .panel-title {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #4a5568;
+            margin-bottom: 16px;
+        }
+
+        .empty-state {
+            color: #4a5568;
+            font-size: 14px;
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .cohort-row {
+            padding: 16px 0;
+            border-bottom: 1px solid #1e2535;
+            text-align: left
+        }
+        .cohort-row:last-child { border-bottom: none; }
+
+        .cohort-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 4px;
+            text-align: left
+        }
+        .cohort-meta {
+            font-size: 12px;
+            color: #4a5568;
+            margin-bottom: 12px;
+            text-align: left;
+        }
+        .stage-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .stage-bar-wrap {
+            display: grid;
+            grid-template-columns: 90px 1fr 36px;
+            align-items: center;
+            gap: 8px;
+        }
+        .stage-label {
+            font-size: 11px;
+            color: #4a5568;
+            text-align: right;
+        }
+        .stage-bar-track {
+            background: #1e2535;
+            border-radius: 3px;
+            height: 6px;
+            overflow: hidden;
+        }
+        .stage-bar-fill {
+            height: 100%;
+            background: #7c9ef8;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        .stage-count {
+            font-size: 11px;
+            color: #4a5568;
+        }
+        .app-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 120px 60px;
+            padding: 0 0 8px 0;
+            border-bottom: 1px solid #1e2535;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #4a5568;
+            margin-bottom: 8px;
+        }
+        .app-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 120px 60px;
+            padding: 10px 0;
+            border-bottom: 1px solid #1e2535;
+            font-size: 13px;
+            align-items: center;
+        }
+        .app-row:last-child { border-bottom: none; }
+        .app-company { color: #e2e8f0; font-weight: 500; }
+        .app-role { color: #94a3b8; }
+        .app-stage {
+            color: #7c9ef8;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .age-green { color: #4ade80; }
+        .age-yellow { color: #facc15; }
+        .age-red { color: #f87171; }
+        .app-age { font-size: 12px; font-weight: 500; }
+
+        .cohort-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .cohort-left { display: flex; flex-direction: column; gap: 4px; }
+        .first-gate {
+            text-align: right;
+            min-width: 70px;
+        }
+        .fg-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #4a5568;
+        }
+        .fg-value {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .fg-good { color: #4ade80; }
+        .fg-mid  { color: #facc15; }
+        .fg-poor { color: #f87171; }
+        .first-gate-label { color: #e2e8f0; }
+        .first-gate-bar { background: #a78bfa; }
+        .sample-warning {
+            color: #facc15;
+            font-size: 11px;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>APPTRACK</h1>
+</header>
+
+<div class="cohort-selector">
+    <button class="cohort-btn active" data-dimension="segment">Market Segment</button>
+    <button class="cohort-btn" data-dimension="resumeVariant">Resume Variant</button>
+    <button class="cohort-btn" data-dimension="roleType">Role Type</button>
+    <button class="cohort-btn" data-dimension="channel">Channel</button>
+</div>
+
+<main class="main">
+    <div class="panel" id="signal-panel">
+        <div class="panel-title">Signal Health by Cohort</div>
+        <div id="cohort-rows" class="empty-state">No application data yet</div>
+    </div>
+
+    <div class="panel" id="active-panel">
+        <div class="panel-title">Active Applications</div>
+        <div id="active-rows" class="empty-state">No active applications</div>
+    </div>
+</main>
+
+<script>
+    const API = '';
+    let allApplications = [];
+    let activeDimension = 'segment';
+
+    const DISPLAY_STAGES = [
+        'RECRUITER_RESPONSE',
+        'RECRUITER_CALL',
+        'TECHNICAL_SCREEN',
+        'TECHNICAL_PASS',
+        'FINAL_ROUND',
+        'OFFER'
+    ];
+
+    const TERMINAL = ['OFFER', 'REJECTED', 'INACTIVE'];
+
+    const STAGE_LABELS = {
+        SUBMITTED: 'Applied',
+        RECRUITER_RESPONSE: 'Recruiter',
+        RECRUITER_CALL: 'Screen',
+        TECHNICAL_SCREEN: 'Tech Screen',
+        TECHNICAL_PASS: 'Tech Pass',
+        FINAL_ROUND: 'Final',
+        OFFER: 'Offer'
+    };
+
+    const STAGE_DATE_FIELD = {
+        RECRUITER_RESPONSE: 'dateRecruiterResponse',
+        RECRUITER_CALL:     'dateRecruiterCall',
+        TECHNICAL_SCREEN:   'dateTechnicalScreen',
+        TECHNICAL_PASS:     'dateTechnicalPass',
+        FINAL_ROUND:        'dateFinalRound',
+        OFFER:              'dateOffer'
+    };
+
+    async function loadData() {
+        try {
+            const res = await fetch(`${API}/api/applications`);
+            allApplications = await res.json();
+            render();
+        } catch (e) {
+            console.error('Failed to load applications', e);
+        }
+    }
+
+    function getDimensionValue(app) {
+        switch (activeDimension) {
+            case 'segment':       return app.jobListing?.company?.segment ?? 'UNKNOWN';
+            case 'resumeVariant': return app.resumeVariant?.versionLabel ?? 'UNKNOWN';
+            case 'roleType':      return app.jobListing?.roleType ?? 'UNKNOWN';
+            case 'channel':       return app.sourceChannel ?? 'UNKNOWN';
+            default:              return 'UNKNOWN';
+        }
+    }
+
+    function groupByCohort(apps) {
+        const groups = {};
+        apps.forEach(app => {
+            const key = getDimensionValue(app);
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(app);
+        });
+        return groups;
+    }
+
+    function passedGate(app, stage) {
+        const field = STAGE_DATE_FIELD[stage];
+        return app[field] != null;
+    }
+
+    function getFirstGateRate(apps) {
+        const passed = apps.filter(a => passedGate(a, 'RECRUITER_RESPONSE')).length;
+        return Math.round((passed / apps.length) * 100);
+    }
+
+    function getLowSampleWarning(total) {
+        if (total < 10) return '⚠ low sample';
+        if (total < 15) return '~ moderate sample';
+        return null;
+    }
+
+    function render() {
+        renderCohorts();
+        renderActive();
+    }
+
+    function renderCohorts() {
+        const container = document.getElementById('cohort-rows');
+        if (allApplications.length === 0) {
+            container.innerHTML = '<div class="empty-state">No application data yet</div>';
+            return;
+        }
+
+        const groups = groupByCohort(allApplications);
+
+        const rows = Object.entries(groups).map(([cohort, apps]) => {
+            const total = apps.length;
+            const firstGateRate = getFirstGateRate(apps);
+            const warning = getLowSampleWarning(total);
+
+            const firstGateClass = firstGateRate >= 30 ? 'fg-good'
+                : firstGateRate >= 15 ? 'fg-mid'
+                    : 'fg-poor';
+
+            const bars = DISPLAY_STAGES.map(stage => {
+                const count = apps.filter(a => passedGate(a, stage)).length;
+                const pct = Math.round((count / total) * 100);
+                const width = Math.max(pct, 1);
+                const isFirstGate = stage === 'RECRUITER_RESPONSE';
+                return `
+                <div class="stage-bar-wrap" title="${STAGE_LABELS[stage]}: ${count} of ${total} (${pct}%)">
+                    <div class="stage-label ${isFirstGate ? 'first-gate-label' : ''}">${STAGE_LABELS[stage]}</div>
+                    <div class="stage-bar-track">
+                        <div class="stage-bar-fill ${isFirstGate ? 'first-gate-bar' : ''}" style="width:${width}%"></div>
+                    </div>
+                    <div class="stage-count">${pct}%</div>
+                </div>`;
+            }).join('');
+
+            return `
+            <div class="cohort-row">
+                <div class="cohort-header">
+                    <div class="cohort-left">
+                        <div class="cohort-name">${cohort}</div>
+                        <div class="cohort-meta">${total} application${total !== 1 ? 's' : ''}${warning ? ' &nbsp;<span class="sample-warning">' + warning + '</span>' : ''}</div>
+                    </div>
+                    <div class="first-gate ${firstGateClass}">
+                        <div class="fg-label">1st gate</div>
+                        <div class="fg-value">${firstGateRate}%</div>
+                    </div>
+                </div>
+                <div class="stage-bars">${bars}</div>
+            </div>`;
+        }).join('');
+
+        container.innerHTML = rows;
+    }
+
+    function renderActive() {
+        const container = document.getElementById('active-rows');
+        const active = allApplications.filter(a => !TERMINAL.includes(a.currentStage));
+
+        if (active.length === 0) {
+            container.innerHTML = '<div class="empty-state">No active applications</div>';
+            return;
+        }
+
+        const today = new Date();
+
+        const rows = active
+            .sort((a, b) => new Date(b.dateSubmitted) - new Date(a.dateSubmitted))
+            .map(app => {
+                const company = app.jobListing?.company?.name ?? 'Unknown';
+                const role = app.jobListing?.title ?? 'Unknown Role';
+                const stage = STAGE_LABELS[app.currentStage] ?? app.currentStage;
+                const submitted = app.dateSubmitted ? new Date(app.dateSubmitted) : null;
+                const daysAgo = submitted
+                    ? Math.floor((today - submitted) / (1000 * 60 * 60 * 24))
+                    : null;
+
+                const ageClass = daysAgo === null ? ''
+                    : daysAgo > 21 ? 'age-red'
+                        : daysAgo > 10 ? 'age-yellow'
+                            : 'age-green';
+
+                return `
+                <div class="app-row">
+                    <div class="app-company">${company}</div>
+                    <div class="app-role">${role}</div>
+                    <div class="app-stage">${stage}</div>
+                    <div class="app-age ${ageClass}">${daysAgo !== null ? daysAgo + 'd' : '—'}</div>
+                </div>`;
+            }).join('');
+
+        container.innerHTML = `
+        <div class="app-header">
+            <span>Company</span><span>Role</span><span>Stage</span><span>Age</span>
+        </div>
+        ${rows}`;
+    }
+
+    document.querySelectorAll('.cohort-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.cohort-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeDimension = btn.dataset.dimension;
+            render();
+        });
+    });
+
+    loadData();
+</script>
+
+</body>
+</html>
