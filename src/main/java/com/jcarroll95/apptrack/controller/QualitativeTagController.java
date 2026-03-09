@@ -1,6 +1,5 @@
 package com.jcarroll95.apptrack.controller;
 
-import com.jcarroll95.apptrack.model.PipelineEvent;
 import com.jcarroll95.apptrack.model.QualitativeTag;
 import com.jcarroll95.apptrack.repository.QualitativeTagRepository;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/qualitativetag")
+@RequestMapping("/api/qualitativetags")
 public class QualitativeTagController {
 
     private final QualitativeTagRepository qualitativeTagRepository;
