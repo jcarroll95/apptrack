@@ -1,10 +1,10 @@
 
 ## Apptrack: Hiring Pipeline Instrumentation
 
-The software engineering hiring process produces outcomes you can observe but not directly explain. Recruiter responses, interview invitations, and rejections are visible. The criteria behind them are not.
+The software engineering hiring process produces outcomes you can observe but not directly explain. Recruiter responses, online assessments, interviews, and rejections are visible. The criteria behind them are not. Some organizations publish guidelines, but it's not clear whether they truly map to outcomes. The only lever I can really pull in this process is visible hiring signal, and I want something better than a spreadsheet to keep track of what works.
 
 This project models each job application as an instance moving through a state machine. Every pipeline transition is recorded alongside the signals presented to the employer at that time: which resume variant was used, the source channel, whether a referral was involved, and qualitative observations from any human touchpoints.
 
 Job listings are stored with each application because postings disappear quickly and are frequently edited. Preserving the original listing keeps the requirements and context tied to an application available for later comparison.
 
-Over time the collected transitions allow basic analysis: which resume variants correlate with recruiter responses, which channels produce interviews, where the pipeline consistently stalls. The goal is not predictive accuracy. It is observability over a process that is otherwise entirely anecdotal.
+Over time the collected transitions allow basic analysis: which resume variants correlate with recruiter responses, which channels produce interviews, where the pipeline consistently stalls. The goal is not predictive accuracy. It is observability over a process that is otherwise entirely anecdotal, and decision justification for modifying what signals I put in..
