@@ -7,4 +7,4 @@ This project models each job application as an instance moving through a state m
 
 Job listings are stored with each application because postings disappear quickly and are frequently edited. Preserving the original listing keeps the requirements and context tied to an application available for later comparison.
 
-Over time the collected transitions allow basic analysis: which resume variants correlate with recruiter responses, which channels produce interviews, where the pipeline consistently stalls. The goal is not predictive accuracy. It is observability over a process that is otherwise entirely anecdotal, and decision justification for modifying what signals I put in..
+Over time the collected transitions allow basic analysis: which resume variants correlate with recruiter responses, which channels produce interviews, where the pipeline consistently stalls. The goal is not predictive accuracy, it's observability over a process that is otherwise entirely anecdotal, and decision justification for modifying what signals I put in.
