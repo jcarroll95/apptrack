@@ -15,7 +15,7 @@
         }
 
         header {
-            padding: 24px 32px;
+            padding: 18px 32px;
             border-bottom: 1px solid #1e2535;
             display: flex;
             align-items: center;
@@ -27,10 +27,40 @@
             font-weight: 600;
             letter-spacing: 0.05em;
             color: #7c9ef8;
+            margin-right: 12px;
+        }
+
+        .header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .add-btn {
+            padding: 6px 14px;
+            background: transparent;
+            border: 1px solid #1e2535;
+            border-radius: 6px;
+            color: #94a3b8;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .add-btn:hover {
+            border-color: #7c9ef8;
+            color: #7c9ef8;
+        }
+        .add-btn.primary {
+            background: #1e2d4a;
+            border-color: #7c9ef8;
+            color: #7c9ef8;
+        }
+        .add-btn.primary:hover {
+            background: #2a3f6a;
         }
 
         .cohort-selector {
-            padding: 20px 32px;
+            padding: 16px 32px;
             display: flex;
             gap: 8px;
             border-bottom: 1px solid #1e2535;
@@ -46,7 +76,6 @@
             cursor: pointer;
             transition: all 0.15s;
         }
-
         .cohort-btn.active {
             background: #1e2d4a;
             border-color: #7c9ef8;
@@ -83,19 +112,19 @@
             padding: 32px 0;
         }
 
+        /* cohort rows */
         .cohort-row {
             padding: 16px 0;
             border-bottom: 1px solid #1e2535;
-            text-align: left
+            text-align: left;
         }
         .cohort-row:last-child { border-bottom: none; }
-
         .cohort-name {
             font-size: 14px;
             font-weight: 600;
             color: #e2e8f0;
             margin-bottom: 4px;
-            text-align: left
+            text-align: left;
         }
         .cohort-meta {
             font-size: 12px;
@@ -103,22 +132,14 @@
             margin-bottom: 12px;
             text-align: left;
         }
-        .stage-bars {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+        .stage-bars { display: flex; flex-direction: column; gap: 6px; }
         .stage-bar-wrap {
             display: grid;
             grid-template-columns: 90px 1fr 36px;
             align-items: center;
             gap: 8px;
         }
-        .stage-label {
-            font-size: 11px;
-            color: #4a5568;
-            text-align: right;
-        }
+        .stage-label { font-size: 11px; color: #4a5568; text-align: right; }
         .stage-bar-track {
             background: #1e2535;
             border-radius: 3px;
@@ -131,10 +152,32 @@
             border-radius: 3px;
             transition: width 0.3s ease;
         }
-        .stage-count {
-            font-size: 11px;
+        .stage-count { font-size: 11px; color: #4a5568; }
+
+        .cohort-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        .cohort-left { display: flex; flex-direction: column; gap: 4px; }
+        .first-gate { text-align: right; min-width: 70px; }
+        .fg-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
             color: #4a5568;
         }
+        .fg-value { font-size: 24px; font-weight: 700; line-height: 1; }
+        .fg-good { color: #4ade80; }
+        .fg-mid  { color: #facc15; }
+        .fg-poor { color: #f87171; }
+        .first-gate-label { color: #e2e8f0; }
+        .first-gate-bar { background: #a78bfa; }
+        .sample-warning { color: #facc15; font-size: 11px; }
+
+        /* active apps table */
         .app-header {
             display: grid;
             grid-template-columns: 1fr 1fr 120px 60px;
@@ -154,66 +197,70 @@
             border-bottom: 1px solid #1e2535;
             font-size: 13px;
             align-items: center;
+            cursor: pointer;
         }
+        .app-row:hover { background: #1a2030; }
         .app-row:last-child { border-bottom: none; }
         .app-company { color: #e2e8f0; font-weight: 500; }
         .app-role { color: #94a3b8; }
-        .app-stage {
-            color: #7c9ef8;
-            font-size: 12px;
-            font-weight: 500;
-        }
+        .app-stage { color: #7c9ef8; font-size: 12px; font-weight: 500; }
         .age-green { color: #4ade80; }
         .age-yellow { color: #facc15; }
         .age-red { color: #f87171; }
         .app-age { font-size: 12px; font-weight: 500; }
 
-        .cohort-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
+        /* inline expand */
+        .app-expand {
+            display: none;
+            padding: 12px 0 16px 0;
+            border-bottom: 1px solid #1e2535;
+            gap: 12px;
+            flex-direction: column;
         }
-        .cohort-left { display: flex; flex-direction: column; gap: 4px; }
-        .first-gate {
-            text-align: right;
-            min-width: 70px;
-        }
-        .fg-label {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: #4a5568;
-        }
-        .fg-value {
-            font-size: 24px;
-            font-weight: 700;
-            line-height: 1;
-        }
-        .fg-good { color: #4ade80; }
-        .fg-mid  { color: #facc15; }
-        .fg-poor { color: #f87171; }
-        .first-gate-label { color: #e2e8f0; }
-        .first-gate-bar { background: #a78bfa; }
-        .sample-warning {
-            color: #facc15;
-            font-size: 11px;
-        }
-        .add-btn {
-            margin-left: auto;
-            padding: 7px 16px;
-            background: #1e2d4a;
-            border: 1px solid #7c9ef8;
-            border-radius: 6px;
-            color: #7c9ef8;
-            font-size: 13px;
+        .app-expand.open { display: flex; }
+        .expand-stage-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .stage-advance-btn {
+            padding: 5px 12px;
+            border-radius: 5px;
+            border: 1px solid #4a5568;
+            background: transparent;
+            color: #94a3b8;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.15s;
         }
-        .add-btn:hover {
-            background: #2a3f6a;
+        .stage-advance-btn:hover { border-color: #7c9ef8; color: #7c9ef8; }
+        .stage-advance-btn.reject { border-color: #4a2020; color: #f87171; }
+        .stage-advance-btn.reject:hover { border-color: #f87171; }
+        .stage-advance-btn.inactive { border-color: #2a2a2a; color: #4a5568; }
+        .stage-advance-btn.inactive:hover { border-color: #4a5568; color: #94a3b8; }
+        .expand-inputs { display: flex; gap: 8px; align-items: center; }
+        .expand-note {
+            flex: 1;
+            background: #0f1117;
+            border: 1px solid #1e2535;
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: #e2e8f0;
+            font-size: 12px;
+            outline: none;
         }
+        .expand-note:focus { border-color: #7c9ef8; }
+        .expand-date {
+            background: #0f1117;
+            border: 1px solid #1e2535;
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: #e2e8f0;
+            font-size: 12px;
+            outline: none;
+            width: 140px;
+        }
+        .expand-date:focus { border-color: #7c9ef8; }
+        .expand-current-stage { font-size: 11px; color: #4a5568; margin-bottom: 4px; }
+        .expand-current-stage span { color: #7c9ef8; font-weight: 600; }
+
+        /* modals */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -228,7 +275,7 @@
             background: #161b27;
             border: 1px solid #1e2535;
             border-radius: 10px;
-            width: 480px;
+            width: 500px;
             max-height: 90vh;
             overflow-y: auto;
         }
@@ -239,11 +286,7 @@
             padding: 16px 24px;
             border-bottom: 1px solid #1e2535;
         }
-        .modal-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #e2e8f0;
-        }
+        .modal-title { font-size: 14px; font-weight: 600; color: #e2e8f0; }
         .modal-close {
             background: none;
             border: none;
@@ -257,11 +300,7 @@
             flex-direction: column;
             gap: 12px;
         }
-        .field-row {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
+        .field-row { display: flex; flex-direction: column; gap: 4px; }
         .field-row label {
             font-size: 11px;
             font-weight: 600;
@@ -270,7 +309,8 @@
             color: #4a5568;
         }
         .field-row input,
-        .field-row select {
+        .field-row select,
+        .field-row textarea {
             background: #0f1117;
             border: 1px solid #1e2535;
             border-radius: 6px;
@@ -278,11 +318,19 @@
             color: #e2e8f0;
             font-size: 13px;
             outline: none;
+            font-family: inherit;
         }
         .field-row input:focus,
-        .field-row select:focus {
-            border-color: #7c9ef8;
+        .field-row select:focus,
+        .field-row textarea:focus { border-color: #7c9ef8; }
+        .field-row textarea { resize: vertical; min-height: 80px; }
+
+        .field-hint {
+            font-size: 11px;
+            color: #4a5568;
+            margin-top: 2px;
         }
+
         .modal-footer {
             display: flex;
             justify-content: flex-end;
@@ -310,95 +358,14 @@
         }
         .btn-submit:hover { background: #2a3f6a; }
 
-        .app-row {
-            cursor: pointer;
-        }
-        .app-row:hover {
-            background: #1a2030;
-        }
-        .app-expand {
-            display: none;
-            padding: 12px 0 16px 0;
-            border-bottom: 1px solid #1e2535;
-            gap: 12px;
-            flex-direction: column;
-        }
-        .app-expand.open {
-            display: flex;
-        }
-        .expand-stage-btns {
+
+
+        .field-row-inline {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
         }
-        .stage-advance-btn {
-            padding: 5px 12px;
-            border-radius: 5px;
-            border: 1px solid #4a5568;
-            background: transparent;
-            color: #94a3b8;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
-        .stage-advance-btn:hover {
-            border-color: #7c9ef8;
-            color: #7c9ef8;
-        }
-        .stage-advance-btn.reject {
-            border-color: #4a2020;
-            color: #f87171;
-        }
-        .stage-advance-btn.reject:hover {
-            border-color: #f87171;
-        }
-        .stage-advance-btn.inactive {
-            border-color: #2a2a2a;
-            color: #4a5568;
-        }
-        .stage-advance-btn.inactive:hover {
-            border-color: #4a5568;
-            color: #94a3b8;
-        }
-        .expand-inputs {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-        .expand-note {
+        .field-row-inline .field-row {
             flex: 1;
-            background: #0f1117;
-            border: 1px solid #1e2535;
-            border-radius: 6px;
-            padding: 6px 10px;
-            color: #e2e8f0;
-            font-size: 12px;
-            outline: none;
-        }
-        .expand-note:focus {
-            border-color: #7c9ef8;
-        }
-        .expand-date {
-            background: #0f1117;
-            border: 1px solid #1e2535;
-            border-radius: 6px;
-            padding: 6px 10px;
-            color: #e2e8f0;
-            font-size: 12px;
-            outline: none;
-            width: 140px;
-        }
-        .expand-date:focus {
-            border-color: #7c9ef8;
-        }
-        .expand-current-stage {
-            font-size: 11px;
-            color: #4a5568;
-            margin-bottom: 4px;
-        }
-        .expand-current-stage span {
-            color: #7c9ef8;
-            font-weight: 600;
         }
     </style>
 </head>
@@ -406,7 +373,12 @@
 
 <header>
     <h1>APPTRACK</h1>
-    <button class="add-btn" id="add-app-btn">+ Add Application</button>
+    <div class="header-actions">
+        <button class="add-btn" id="btn-add-resume">+ Resume</button>
+        <button class="add-btn" id="btn-add-contact">+ Contact</button>
+        <button class="add-btn" id="btn-add-company">+ Company</button>
+        <button class="add-btn primary" id="btn-add-app">+ Application</button>
+    </div>
 </header>
 
 <div class="cohort-selector">
@@ -417,92 +389,242 @@
 </div>
 
 <main class="main">
-    <div class="panel" id="signal-panel">
+    <div class="panel">
         <div class="panel-title">Signal Health by Cohort</div>
         <div id="cohort-rows"></div>
     </div>
-
-    <div class="panel" id="active-panel">
+    <div class="panel">
         <div class="panel-title">Active Applications</div>
         <div id="active-rows"></div>
     </div>
 </main>
 
-
-
-<div id="modal-overlay" class="modal-overlay hidden">
+<!-- ADD APPLICATION MODAL -->
+<div id="modal-app" class="modal-overlay hidden">
     <div class="modal">
         <div class="modal-header">
             <span class="modal-title">New Application</span>
-            <button class="modal-close" id="modal-close">✕</button>
+            <button class="modal-close" data-close="modal-app">✕</button>
         </div>
         <div class="modal-body">
             <div class="field-row">
                 <label>Company Name</label>
-                <input type="text" id="f-company" placeholder="DefenseCo-A" />
+                <input type="text" id="app-company-name" placeholder="Select or type company name..." autocomplete="off" list="company-list" />
+                <datalist id="company-list"></datalist>
             </div>
-            <div class="field-row">
-                <label>Market Segment</label>
-                <select id="f-segment">
-                    <option value="DEFENSE">Defense</option>
-                    <option value="FINTECH">Fintech</option>
-                    <option value="ENTERPRISE">Enterprise</option>
-                    <option value="STARTUP">Startup</option>
-                    <option value="TECH">Tech</option>
-                    <option value="CONSULTING">Consulting</option>
-                    <option value="OTHER">Other</option>
-                </select>
-            </div>
-            <div class="field-row">
-                <label>Company Size</label>
-                <select id="f-size">
-                    <option value="SMALL">Small</option>
-                    <option value="MID">Mid</option>
-                    <option value="LARGE">Large</option>
-                </select>
+            <div id="app-company-new-fields" style="display:none">
+                <div class="field-row-inline" style="margin-top:8px">
+                    <div class="field-row">
+                        <label>Segment</label>
+                        <select id="app-segment">
+                            <option value="DEFENSE">Defense</option>
+                            <option value="FINTECH">Fintech</option>
+                            <option value="ENTERPRISE">Enterprise</option>
+                            <option value="STARTUP">Startup</option>
+                            <option value="TECH">Tech</option>
+                            <option value="CONSULTING">Consulting</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                    <div class="field-row">
+                        <label>Size</label>
+                        <select id="app-size">
+                            <option value="SMALL">Small</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="LARGE">Large</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="field-row">
                 <label>Role Title</label>
-                <input type="text" id="f-title" placeholder="Software Engineer I" />
+                <input type="text" id="app-title" placeholder="Software Engineer I" />
+            </div>
+            <div class="field-row-inline">
+                <div class="field-row">
+                    <label>Role Type</label>
+                    <select id="app-roletype">
+                        <option value="BACKEND">Backend</option>
+                        <option value="FULLSTACK">Full Stack</option>
+                        <option value="PLATFORM">Platform</option>
+                        <option value="DEVOPS">DevOps</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Experience Level</label>
+                    <select id="app-explevel">
+                        <option value="JUNIOR">Junior</option>
+                        <option value="MID">Mid</option>
+                        <option value="SENIOR">Senior</option>
+                    </select>
+                </div>
             </div>
             <div class="field-row">
-                <label>Role Type</label>
-                <select id="f-roletype">
-                    <option value="BACKEND">Backend</option>
-                    <option value="FULLSTACK">Full Stack</option>
-                    <option value="PLATFORM">Platform</option>
-                    <option value="DEVOPS">DevOps</option>
-                    <option value="OTHER">Other</option>
-                </select>
+                <label>Job Listing URL</label>
+                <input type="text" id="app-url" placeholder="https://..." />
+            </div>
+            <div class="field-row">
+                <label>Listing Notes</label>
+                <textarea id="app-listing-notes" placeholder="Paste key requirements, tech stack, notes from the listing..."></textarea>
             </div>
             <div class="field-row">
                 <label>Resume Variant</label>
-                <select id="f-resume"></select>
+                <select id="app-resume"></select>
+            </div>
+            <div class="field-row-inline">
+                <div class="field-row">
+                    <label>Source Channel</label>
+                    <select id="app-channel">
+                        <option value="COLD">Cold</option>
+                        <option value="JOB_BOARD">Job Board</option>
+                        <option value="REFERRAL">Referral</option>
+                        <option value="RECRUITER_OUTREACH">Recruiter Outreach</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Referred</label>
+                    <select id="app-referred">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                </div>
             </div>
             <div class="field-row">
-                <label>Source Channel</label>
-                <select id="f-channel">
-                    <option value="COLD">Cold</option>
-                    <option value="JOB_BOARD">Job Board</option>
-                    <option value="REFERRAL">Referral</option>
-                    <option value="RECRUITER_OUTREACH">Recruiter Outreach</option>
-                </select>
-            </div>
-            <div class="field-row">
-                <label>Referred</label>
-                <select id="f-referred">
-                    <option value="false">No</option>
-                    <option value="true">Yes</option>
+                <label>Contact (optional)</label>
+                <select id="app-contact">
+                    <option value="">None</option>
                 </select>
             </div>
             <div class="field-row">
                 <label>Date Submitted</label>
-                <input type="date" id="f-date" />
+                <input type="date" id="app-date" />
+            </div>
+            <div class="field-row">
+                <label>Notes</label>
+                <input type="text" id="app-notes" placeholder="Any additional notes..." />
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn-cancel" id="modal-cancel">Cancel</button>
-            <button class="btn-submit" id="modal-submit">Save Application</button>
+            <button class="btn-cancel" data-close="modal-app">Cancel</button>
+            <button class="btn-submit" id="submit-app">Save Application</button>
+        </div>
+    </div>
+</div>
+
+<!-- ADD COMPANY MODAL -->
+<div id="modal-company" class="modal-overlay hidden">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">Add Company</span>
+            <button class="modal-close" data-close="modal-company">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="field-row">
+                <label>Company Name</label>
+                <input type="text" id="co-name" placeholder="Lockheed Martin" />
+            </div>
+            <div class="field-row-inline">
+                <div class="field-row">
+                    <label>Segment</label>
+                    <select id="co-segment">
+                        <option value="DEFENSE">Defense</option>
+                        <option value="FINTECH">Fintech</option>
+                        <option value="ENTERPRISE">Enterprise</option>
+                        <option value="STARTUP">Startup</option>
+                        <option value="TECH">Tech</option>
+                        <option value="CONSULTING">Consulting</option>
+                        <option value="OTHER">Other</option>
+                    </select>
+                </div>
+                <div class="field-row">
+                    <label>Size</label>
+                    <select id="co-size">
+                        <option value="SMALL">Small</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="LARGE">Large</option>
+                    </select>
+                </div>
+            </div>
+            <div class="field-row">
+                <label>Notes</label>
+                <textarea id="co-notes" placeholder="Prime contractor, clearance required, etc."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" data-close="modal-company">Cancel</button>
+            <button class="btn-submit" id="submit-company">Save Company</button>
+        </div>
+    </div>
+</div>
+
+<!-- ADD CONTACT MODAL -->
+<div id="modal-contact" class="modal-overlay hidden">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">Add Contact</span>
+            <button class="modal-close" data-close="modal-contact">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="field-row">
+                <label>Name</label>
+                <input type="text" id="ct-name" placeholder="Jane Smith" />
+            </div>
+            <div class="field-row">
+                <label>Company</label>
+                <input type="text" id="ct-company" placeholder="Company name (optional)" />
+            </div>
+            <div class="field-row-inline">
+                <div class="field-row">
+                    <label>Email</label>
+                    <input type="text" id="ct-email" placeholder="jane@company.com" />
+                </div>
+                <div class="field-row">
+                    <label>Phone</label>
+                    <input type="text" id="ct-phone" placeholder="555-555-5555" />
+                </div>
+            </div>
+            <div class="field-row">
+                <label>Notes</label>
+                <textarea id="ct-notes" placeholder="Recruiter, hiring manager, referral source..."></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" data-close="modal-contact">Cancel</button>
+            <button class="btn-submit" id="submit-contact">Save Contact</button>
+        </div>
+    </div>
+</div>
+
+<!-- ADD RESUME MODAL -->
+<div id="modal-resume" class="modal-overlay hidden">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title">Add Resume Variant</span>
+            <button class="modal-close" data-close="modal-resume">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="field-row">
+                <label>Version Label</label>
+                <input type="text" id="rv-label" placeholder="v3-clearance-forward" />
+                <span class="field-hint">Use a short slug you can identify in charts.</span>
+            </div>
+            <div class="field-row">
+                <label>Date Created</label>
+                <input type="date" id="rv-date" />
+            </div>
+            <div class="field-row">
+                <label>Change Summary</label>
+                <textarea id="rv-summary" placeholder="What changed from the previous version and why..."></textarea>
+            </div>
+            <div class="field-row">
+                <label>File URL (optional)</label>
+                <input type="text" id="rv-url" placeholder="Google Drive link, S3 URL, etc." />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel" data-close="modal-resume">Cancel</button>
+            <button class="btn-submit" id="submit-resume">Save Resume Variant</button>
         </div>
     </div>
 </div>
@@ -510,19 +632,17 @@
 <script>
     const API = '';
     let allApplications = [];
+    let allContacts = [];
+    let allResumeVariants = [];
     let activeDimension = 'segment';
+    let matchedCompanyId = null;
 
     const DISPLAY_STAGES = [
-        'RECRUITER_RESPONSE',
-        'RECRUITER_CALL',
-        'TECHNICAL_SCREEN',
-        'TECHNICAL_PASS',
-        'FINAL_ROUND',
-        'OFFER'
+        'RECRUITER_RESPONSE', 'RECRUITER_CALL',
+        'TECHNICAL_SCREEN', 'TECHNICAL_PASS',
+        'FINAL_ROUND', 'OFFER'
     ];
-
     const TERMINAL = ['OFFER', 'REJECTED', 'INACTIVE'];
-
     const STAGE_LABELS = {
         SUBMITTED: 'Applied',
         RECRUITER_RESPONSE: 'Recruiter',
@@ -532,7 +652,6 @@
         FINAL_ROUND: 'Final',
         OFFER: 'Offer'
     };
-
     const STAGE_DATE_FIELD = {
         RECRUITER_RESPONSE: 'dateRecruiterResponse',
         RECRUITER_CALL:     'dateRecruiterCall',
@@ -541,16 +660,290 @@
         FINAL_ROUND:        'dateFinalRound',
         OFFER:              'dateOffer'
     };
+    const NEXT_STAGES = {
+        SUBMITTED:          ['RECRUITER_RESPONSE'],
+        RECRUITER_RESPONSE: ['RECRUITER_CALL'],
+        RECRUITER_CALL:     ['TECHNICAL_SCREEN'],
+        TECHNICAL_SCREEN:   ['TECHNICAL_PASS'],
+        TECHNICAL_PASS:     ['FINAL_ROUND'],
+        FINAL_ROUND:        ['OFFER']
+    };
+
+    // ─── DATA LOADING ────────────────────────────────────────────────────────
 
     async function loadData() {
         try {
             const res = await fetch(`${API}/api/applications`);
             allApplications = await res.json();
             render();
-        } catch (e) {
-            console.error('Failed to load applications', e);
-        }
+        } catch (e) { console.error('Failed to load applications', e); }
     }
+
+    async function loadContacts() {
+        try {
+            const res = await fetch(`${API}/api/contacts`);
+            allContacts = await res.json();
+            const sel = document.getElementById('app-contact');
+            sel.innerHTML = '<option value="">None</option>' +
+                allContacts.map(c => `<option value="${c.id}">${c.name}${c.company ? ' — ' + c.company : ''}</option>`).join('');
+        } catch (e) { console.error('Failed to load contacts', e); }
+    }
+
+    async function loadResumeVariants() {
+        try {
+            const res = await fetch(`${API}/api/resumevariants`);
+            allResumeVariants = await res.json();
+            const sel = document.getElementById('app-resume');
+            sel.innerHTML = allResumeVariants.map(r =>
+                `<option value="${r.id}">${r.versionLabel}</option>`
+            ).join('');
+        } catch (e) { console.error('Failed to load resume variants', e); }
+    }
+
+    // ─── COMPANY LOOKUP ───────────────────────────────────────────────────────
+
+    let allCompanies = [];
+
+    async function loadCompanies() {
+        try {
+            const res = await fetch(`${API}/api/companies`);
+            allCompanies = await res.json();
+            const list = document.getElementById('company-list');
+            list.innerHTML = allCompanies.map(c => `<option value="${c.name}">`).join('');
+        } catch (e) { console.error('Failed to load companies', e); }
+    }
+
+    document.getElementById('app-company-name').addEventListener('input', function() {
+        const name = this.value.trim();
+        const match = allCompanies.find(c => c.name.toLowerCase() === name.toLowerCase());
+        const newFields = document.getElementById('app-company-new-fields');
+        if (match) {
+            matchedCompanyId = match.id;
+            newFields.style.display = 'none';
+        } else {
+            matchedCompanyId = null;
+            newFields.style.display = name.length > 1 ? 'block' : 'none';
+        }
+    });
+
+    // ─── SUBMIT HANDLERS ─────────────────────────────────────────────────────
+
+    async function submitApplication() {
+        const companyName = document.getElementById('app-company-name').value.trim();
+        const title = document.getElementById('app-title').value.trim();
+        const dateSubmitted = document.getElementById('app-date').value;
+        const resumeId = document.getElementById('app-resume').value;
+
+        if (!companyName || !title || !dateSubmitted || !resumeId) {
+            alert('Company, role title, resume variant, and date are required.');
+            return;
+        }
+
+        let companyId = matchedCompanyId;
+
+        if (!companyId) {
+            const segment = document.getElementById('app-segment').value;
+            const size = document.getElementById('app-size').value;
+            const companyRes = await fetch(`${API}/api/companies`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: companyName, segment, size })
+            });
+            const company = await companyRes.json();
+            companyId = company.id;
+        }
+
+        const roleType = document.getElementById('app-roletype').value;
+        const experienceLevel = document.getElementById('app-explevel').value;
+        const url = document.getElementById('app-url').value.trim();
+        const descriptionNotes = document.getElementById('app-listing-notes').value.trim();
+
+        const listingRes = await fetch(`${API}/api/joblistings`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                company: { id: companyId },
+                title,
+                roleType,
+                experienceLevel,
+                url: url || null,
+                descriptionNotes: descriptionNotes || null,
+                dateDiscovered: dateSubmitted
+            })
+        });
+        const listing = await listingRes.json();
+
+        const channel = document.getElementById('app-channel').value;
+        const referred = document.getElementById('app-referred').value === 'true';
+        const contactId = document.getElementById('app-contact').value;
+        const notes = document.getElementById('app-notes').value.trim();
+
+        await fetch(`${API}/api/applications`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                jobListing: { id: listing.id },
+                resumeVariant: { id: parseInt(resumeId) },
+                contact: contactId ? { id: parseInt(contactId) } : null,
+                referred,
+                sourceChannel: channel,
+                currentStage: 'SUBMITTED',
+                dateSubmitted,
+                active: true,
+                notes: notes || null
+            })
+        });
+
+        closeModal('modal-app');
+        resetAppModal();
+        await loadData();
+    }
+
+    async function submitCompany() {
+        const name = document.getElementById('co-name').value.trim();
+        if (!name) { alert('Company name is required.'); return; }
+
+        await fetch(`${API}/api/companies`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name,
+                segment: document.getElementById('co-segment').value,
+                size: document.getElementById('co-size').value,
+                notes: document.getElementById('co-notes').value.trim() || null
+            })
+        });
+
+        closeModal('modal-company');
+        document.getElementById('co-name').value = '';
+        document.getElementById('co-notes').value = '';
+    }
+
+    async function submitContact() {
+        const name = document.getElementById('ct-name').value.trim();
+        if (!name) { alert('Contact name is required.'); return; }
+
+        await fetch(`${API}/api/contacts`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name,
+                company: document.getElementById('ct-company').value.trim() || null,
+                email: document.getElementById('ct-email').value.trim() || null,
+                phone: document.getElementById('ct-phone').value.trim() || null,
+                notes: document.getElementById('ct-notes').value.trim() || null
+            })
+        });
+
+        closeModal('modal-contact');
+        document.getElementById('ct-name').value = '';
+        document.getElementById('ct-company').value = '';
+        document.getElementById('ct-email').value = '';
+        document.getElementById('ct-phone').value = '';
+        document.getElementById('ct-notes').value = '';
+        await loadContacts();
+    }
+
+    async function submitResume() {
+        const label = document.getElementById('rv-label').value.trim();
+        if (!label) { alert('Version label is required.'); return; }
+
+        await fetch(`${API}/api/resumevariants`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                versionLabel: label,
+                dateCreated: document.getElementById('rv-date').value || null,
+                changeSummary: document.getElementById('rv-summary').value.trim() || null,
+                fileUrl: document.getElementById('rv-url').value.trim() || null
+            })
+        });
+
+        closeModal('modal-resume');
+        document.getElementById('rv-label').value = '';
+        document.getElementById('rv-summary').value = '';
+        document.getElementById('rv-url').value = '';
+        await loadResumeVariants();
+    }
+
+    // ─── MODAL HELPERS ────────────────────────────────────────────────────────
+
+    function openModal(id) {
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.add('hidden');
+    }
+
+    function resetAppModal() {
+        document.getElementById('app-company-name').value = '';
+        document.getElementById('app-company-new-fields').style.display = 'none';
+        document.getElementById('app-title').value = '';
+        document.getElementById('app-url').value = '';
+        document.getElementById('app-listing-notes').value = '';
+        document.getElementById('app-notes').value = '';
+        document.getElementById('app-referred').value = 'false';
+        document.getElementById('app-date').value = new Date().toISOString().split('T')[0];
+        matchedCompanyId = null;
+    }
+
+    // wire close buttons generically
+    document.querySelectorAll('[data-close]').forEach(btn => {
+        btn.addEventListener('click', () => closeModal(btn.dataset.close));
+    });
+
+    // wire open buttons
+    document.getElementById('btn-add-app').addEventListener('click', () => {
+        document.getElementById('app-date').value = new Date().toISOString().split('T')[0];
+        openModal('modal-app');
+    });
+    document.getElementById('btn-add-company').addEventListener('click', () => openModal('modal-company'));
+    document.getElementById('btn-add-contact').addEventListener('click', () => openModal('modal-contact'));
+    document.getElementById('btn-add-resume').addEventListener('click', () => {
+        document.getElementById('rv-date').value = new Date().toISOString().split('T')[0];
+        openModal('modal-resume');
+    });
+
+    // wire submit buttons
+    document.getElementById('submit-app').addEventListener('click', submitApplication);
+    document.getElementById('submit-company').addEventListener('click', submitCompany);
+    document.getElementById('submit-contact').addEventListener('click', submitContact);
+    document.getElementById('submit-resume').addEventListener('click', submitResume);
+
+    // ─── STAGE TRANSITIONS ────────────────────────────────────────────────────
+
+    let expandedAppId = null;
+
+    async function transitionStage(appId, stage) {
+        event.stopPropagation();
+        const btn = event.target;
+        btn.textContent = '...';
+        btn.disabled = true;
+
+        const noteEl = document.getElementById(`note-${appId}`);
+        const dateEl = document.getElementById(`date-${appId}`);
+
+        await fetch(`${API}/api/applications/${appId}/stage`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                stage,
+                notes: noteEl ? noteEl.value.trim() : '',
+                date: dateEl ? dateEl.value : ''
+            })
+        });
+
+        expandedAppId = null;
+        await loadData();
+    }
+
+    function toggleExpand(appId) {
+        expandedAppId = expandedAppId === appId ? null : appId;
+        renderActive();
+    }
+
+    // ─── RENDER ───────────────────────────────────────────────────────────────
 
     function getDimensionValue(app) {
         switch (activeDimension) {
@@ -573,13 +966,11 @@
     }
 
     function passedGate(app, stage) {
-        const field = STAGE_DATE_FIELD[stage];
-        return app[field] != null;
+        return app[STAGE_DATE_FIELD[stage]] != null;
     }
 
     function getFirstGateRate(apps) {
-        const passed = apps.filter(a => passedGate(a, 'RECRUITER_RESPONSE')).length;
-        return Math.round((passed / apps.length) * 100);
+        return Math.round((apps.filter(a => passedGate(a, 'RECRUITER_RESPONSE')).length / apps.length) * 100);
     }
 
     function getLowSampleWarning(total) {
@@ -595,32 +986,28 @@
 
     function renderCohorts() {
         const container = document.getElementById('cohort-rows');
-        if (allApplications.length === 0) {
+        if (!allApplications.length) {
             container.innerHTML = '<div class="empty-state">No application data yet</div>';
             return;
         }
 
         const groups = groupByCohort(allApplications);
 
-        const rows = Object.entries(groups).map(([cohort, apps]) => {
+        container.innerHTML = Object.entries(groups).map(([cohort, apps]) => {
             const total = apps.length;
             const firstGateRate = getFirstGateRate(apps);
             const warning = getLowSampleWarning(total);
-
-            const firstGateClass = firstGateRate >= 30 ? 'fg-good'
-                : firstGateRate >= 15 ? 'fg-mid'
-                    : 'fg-poor';
+            const firstGateClass = firstGateRate >= 30 ? 'fg-good' : firstGateRate >= 15 ? 'fg-mid' : 'fg-poor';
 
             const bars = DISPLAY_STAGES.map(stage => {
                 const count = apps.filter(a => passedGate(a, stage)).length;
                 const pct = Math.round((count / total) * 100);
-                const width = Math.max(pct, 1);
                 const isFirstGate = stage === 'RECRUITER_RESPONSE';
                 return `
                 <div class="stage-bar-wrap" title="${STAGE_LABELS[stage]}: ${count} of ${total} (${pct}%)">
                     <div class="stage-label ${isFirstGate ? 'first-gate-label' : ''}">${STAGE_LABELS[stage]}</div>
                     <div class="stage-bar-track">
-                        <div class="stage-bar-fill ${isFirstGate ? 'first-gate-bar' : ''}" style="width:${width}%"></div>
+                        <div class="stage-bar-fill ${isFirstGate ? 'first-gate-bar' : ''}" style="width:${Math.max(pct,1)}%"></div>
                     </div>
                     <div class="stage-count">${pct}%</div>
                 </div>`;
@@ -641,55 +1028,13 @@
                 <div class="stage-bars">${bars}</div>
             </div>`;
         }).join('');
-
-        container.innerHTML = rows;
-    }
-
-    const NEXT_STAGES = {
-        SUBMITTED:          ['RECRUITER_RESPONSE'],
-        RECRUITER_RESPONSE: ['RECRUITER_CALL'],
-        RECRUITER_CALL:     ['TECHNICAL_SCREEN'],
-        TECHNICAL_SCREEN:   ['TECHNICAL_PASS'],
-        TECHNICAL_PASS:     ['FINAL_ROUND'],
-        FINAL_ROUND:        ['OFFER']
-    };
-
-    let expandedAppId = null;
-
-    async function transitionStage(appId, stage) {
-        const noteEl = document.getElementById(`note-${appId}`);
-        const dateEl = document.getElementById(`date-${appId}`);
-        const notes = noteEl ? noteEl.value.trim() : '';
-        const date = dateEl ? dateEl.value : '';
-
-        // prevent click propagation to toggleExpand
-        event.stopPropagation();
-
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = '...';
-        btn.disabled = true;
-
-        await fetch(`${API}/api/applications/${appId}/stage`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ stage, notes, date })
-        });
-
-        expandedAppId = null;
-        await loadData();
-    }
-
-    function toggleExpand(appId) {
-        expandedAppId = expandedAppId === appId ? null : appId;
-        renderActive();
     }
 
     function renderActive() {
         const container = document.getElementById('active-rows');
         const active = allApplications.filter(a => !TERMINAL.includes(a.currentStage));
 
-        if (active.length === 0) {
+        if (!active.length) {
             container.innerHTML = '<div class="empty-state">No active applications</div>';
             return;
         }
@@ -704,36 +1049,14 @@
                 const role = app.jobListing?.title ?? 'Unknown Role';
                 const stage = STAGE_LABELS[app.currentStage] ?? app.currentStage;
                 const submitted = app.dateSubmitted ? new Date(app.dateSubmitted) : null;
-                const daysAgo = submitted
-                    ? Math.floor((today - submitted) / (1000 * 60 * 60 * 24))
-                    : null;
-
-                const ageClass = daysAgo === null ? ''
-                    : daysAgo > 21 ? 'age-red'
-                        : daysAgo > 10 ? 'age-yellow'
-                            : 'age-green';
-
+                const daysAgo = submitted ? Math.floor((today - submitted) / 86400000) : null;
+                const ageClass = daysAgo === null ? '' : daysAgo > 21 ? 'age-red' : daysAgo > 10 ? 'age-yellow' : 'age-green';
                 const isExpanded = expandedAppId === app.id;
                 const nextStages = NEXT_STAGES[app.currentStage] ?? [];
 
                 const advanceBtns = nextStages.map(s =>
-                    `<button class="stage-advance-btn" onclick="transitionStage(${app.id}, '${s}')"
-                    >→ ${STAGE_LABELS[s] ?? s}</button>`
+                    `<button class="stage-advance-btn" onclick="transitionStage(${app.id},'${s}')">→ ${STAGE_LABELS[s] ?? s}</button>`
                 ).join('');
-
-                const expandSection = `
-                <div class="app-expand ${isExpanded ? 'open' : ''}" id="expand-${app.id}">
-                    <div class="expand-current-stage">Current stage: <span>${stage}</span></div>
-                    <div class="expand-inputs">
-                        <input class="expand-note" id="note-${app.id}" type="text" placeholder="Quick note (optional)" />
-                        <input class="expand-date" id="date-${app.id}" type="date" value="${todayStr}" />
-                    </div>
-                    <div class="expand-stage-btns">
-                        ${advanceBtns}
-                        <button class="stage-advance-btn reject" onclick="transitionStage(${app.id}, 'REJECTED')">✕ Rejected</button>
-                        <button class="stage-advance-btn inactive" onclick="transitionStage(${app.id}, 'INACTIVE')">— Inactive</button>
-                    </div>
-                </div>`;
 
                 return `
                 <div class="app-row" onclick="toggleExpand(${app.id})">
@@ -742,15 +1065,27 @@
                     <div class="app-stage">${stage}</div>
                     <div class="app-age ${ageClass}">${daysAgo !== null ? daysAgo + 'd' : '—'}</div>
                 </div>
-                ${expandSection}`;
+                <div class="app-expand ${isExpanded ? 'open' : ''}">
+                    <div class="expand-current-stage">Current stage: <span>${stage}</span></div>
+                    <div class="expand-inputs">
+                        <input class="expand-note" id="note-${app.id}" type="text" placeholder="Quick note (optional)" />
+                        <input class="expand-date" id="date-${app.id}" type="date" value="${todayStr}" />
+                    </div>
+                    <div class="expand-stage-btns">
+                        ${advanceBtns}
+                        <button class="stage-advance-btn reject" onclick="transitionStage(${app.id},'REJECTED')">✕ Rejected</button>
+                        <button class="stage-advance-btn inactive" onclick="transitionStage(${app.id},'INACTIVE')">— Inactive</button>
+                    </div>
+                </div>`;
             }).join('');
 
         container.innerHTML = `
         <div class="app-header">
             <span>Company</span><span>Role</span><span>Stage</span><span>Age</span>
-        </div>
-        ${rows}`;
+        </div>${rows}`;
     }
+
+    // ─── COHORT BUTTONS ───────────────────────────────────────────────────────
 
     document.querySelectorAll('.cohort-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -761,96 +1096,13 @@
         });
     });
 
-    let resumeVariants = [];
+    // ─── INIT ─────────────────────────────────────────────────────────────────
 
-    async function loadResumeVariants() {
-        try {
-            const res = await fetch(`${API}/api/resumevariants`);
-            resumeVariants = await res.json();
-            const select = document.getElementById('f-resume');
-            select.innerHTML = resumeVariants.map(r =>
-                `<option value="${r.id}">${r.versionLabel}</option>`
-            ).join('');
-        } catch (e) {
-            console.error('Failed to load resume variants', e);
-        }
-    }
-
-    async function submitApplication() {
-        const companyName = document.getElementById('f-company').value.trim();
-        const segment = document.getElementById('f-segment').value;
-        const size = document.getElementById('f-size').value;
-        const title = document.getElementById('f-title').value.trim();
-        const roleType = document.getElementById('f-roletype').value;
-        const resumeId = document.getElementById('f-resume').value;
-        const channel = document.getElementById('f-channel').value;
-        const referred = document.getElementById('f-referred').value === 'true';
-        const dateSubmitted = document.getElementById('f-date').value;
-
-        if (!companyName || !title || !dateSubmitted) {
-            alert('Company, role title, and date are required.');
-            return;
-        }
-
-        // Create or find company
-        const companyRes = await fetch(`${API}/api/companies`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name: companyName, segment, size })
-        });
-        const company = await companyRes.json();
-
-        // Create job listing
-        const listingRes = await fetch(`${API}/api/joblistings`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                company: { id: company.id },
-                title,
-                roleType,
-                experienceRequired: 'JUNIOR',
-                dateDiscovered: dateSubmitted
-            })
-        });
-        const listing = await listingRes.json();
-
-        // Create application
-        await fetch(`${API}/api/applications`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                jobListing: { id: listing.id },
-                resumeVariant: { id: parseInt(resumeId) },
-                referred,
-                sourceChannel: channel,
-                currentStage: 'SUBMITTED',
-                dateSubmitted,
-                active: true
-            })
-        });
-
-        closeModal();
-        await loadData();
-    }
-
-    function openModal() {
-        document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
-        document.getElementById('modal-overlay').classList.remove('hidden');
-    }
-
-    function closeModal() {
-        document.getElementById('modal-overlay').classList.add('hidden');
-    }
-
-    document.getElementById('add-app-btn').addEventListener('click', openModal);
-    document.getElementById('modal-close').addEventListener('click', closeModal);
-    document.getElementById('modal-cancel').addEventListener('click', closeModal);
-    document.getElementById('modal-submit').addEventListener('click', submitApplication);
-
+    loadCompanies();
     loadResumeVariants();
+    loadContacts();
     loadData();
 
 </script>
-
 </body>
 </html>

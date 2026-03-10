@@ -33,4 +33,11 @@ public class CompanyController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<Company> searchByName(@RequestParam String name) {
+        return companyRepository.findByNameIgnoreCase(name)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
