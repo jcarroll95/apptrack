@@ -46,12 +46,6 @@ class ApplicationControllerTest {
 
     @Test
     void application_stateForward() {
-        // arrange buildApp
-        // arrange when - this is scripting the mock (when the code calls this method, return this)
-        // act - call the method under test
-        // assert - check the outcomes
-        // verify - confirm that the code did something with its dependency
-
         Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
         newApp.setId(1L);
 
@@ -64,7 +58,6 @@ class ApplicationControllerTest {
                 "notes", ""
         );
 
-        // self note for the lambda: pass the same object back, ie pretend to be a database
         when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         ResponseEntity<Application> response = controller.updateStage(1L, body);
 
@@ -77,12 +70,6 @@ class ApplicationControllerTest {
 
     @Test
     void application_rejected() {
-        // arrange buildApp
-        // arrange when - this is scripting the mock (when the code calls this method, return this)
-        // act - call the method under test
-        // assert - check the outcomes
-        // verify - confirm that the code did something with its dependency
-
         Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
         newApp.setId(1L);
 
@@ -108,12 +95,6 @@ class ApplicationControllerTest {
 
     @Test
     void application_offer() {
-        // arrange buildApp
-        // arrange when - this is scripting the mock (when the code calls this method, return this)
-        // act - call the method under test
-        // assert - check the outcomes
-        // verify - confirm that the code did something with its dependency
-
         Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
         newApp.setId(1L);
 
@@ -126,7 +107,6 @@ class ApplicationControllerTest {
                 "notes", ""
         );
 
-        // self note for the lambda: pass the same object back, ie pretend to be a database
         when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         ResponseEntity<Application> response = controller.updateStage(1L, body);
 
@@ -139,11 +119,6 @@ class ApplicationControllerTest {
 
     @Test
     void application_notesOverwrite() {
-        // arrange buildApp
-        // arrange when - this is scripting the mock (when the code calls this method, return this)
-        // act - call the method under test
-        // assert - check the outcomes
-        // verify - confirm that the code did something with its dependency
 
         Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
         newApp.setId(1L);
@@ -157,7 +132,6 @@ class ApplicationControllerTest {
                 "notes", "This note will overwrite the old data."
         );
 
-        // self note for the lambda: pass the same object back, ie pretend to be a database
         when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         ResponseEntity<Application> response = controller.updateStage(1L, body);
 
@@ -171,11 +145,6 @@ class ApplicationControllerTest {
 
     @Test
     void application_dontOverwrite() {
-        // arrange buildApp
-        // arrange when - this is scripting the mock (when the code calls this method, return this)
-        // act - call the method under test
-        // assert - check the outcomes
-        // verify - confirm that the code did something with its dependency
 
         Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
         newApp.setId(1L);
@@ -190,7 +159,6 @@ class ApplicationControllerTest {
                 "notes", ""
         );
 
-        // self note for the lambda: pass the same object back, ie pretend to be a database
         when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         ResponseEntity<Application> response = controller.updateStage(1L, body);
 
