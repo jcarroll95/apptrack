@@ -46,12 +46,6 @@ class ApplicationControllerTest {
 
     @Test
     void application_stateForward() {
-        // arrange buildApp
-        // arrange when - this is scripting the mock (when the code calls this method, return this)
-        // act - call the method under test
-        // assert - check the outcomes
-        // verify - confirm that the code did something with its dependency
-
         Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
         newApp.setId(1L);
 
@@ -64,13 +58,114 @@ class ApplicationControllerTest {
                 "notes", ""
         );
 
-        // self note for the lambda: pass the same object back, ie pretend to be a database
         when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
         ResponseEntity<Application> response = controller.updateStage(1L, body);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(AppStage.RECRUITER_RESPONSE, newApp.getCurrentStage());
         assertEquals(LocalDate.now(), newApp.getDateRecruiterResponse());
+        assertTrue(newApp.isActive());
+        verify(applicationRepository).save(any(Application.class));
+    }
+
+    @Test
+    void application_rejected() {
+        Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
+        newApp.setId(1L);
+
+        when(applicationRepository.findById(1L)).thenReturn(Optional.of(newApp));
+
+        // pass in body object
+        Map<String, String> body = Map.of(
+                "stage","REJECTED",
+                "date", LocalDate.now().toString(),
+                "notes", ""
+        );
+
+        // self note for the lambda: pass the same object back, ie pretend to be a database
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        ResponseEntity<Application> response = controller.updateStage(1L, body);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(AppStage.REJECTED, newApp.getCurrentStage());
+        assertEquals(LocalDate.now(), newApp.getDateRejection());
+        assertFalse(newApp.isActive());
+        verify(applicationRepository).save(any(Application.class));
+    }
+
+    @Test
+    void application_offer() {
+        Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
+        newApp.setId(1L);
+
+        when(applicationRepository.findById(1L)).thenReturn(Optional.of(newApp));
+
+        // pass in body object
+        Map<String, String> body = Map.of(
+                "stage","OFFER",
+                "date", LocalDate.now().toString(),
+                "notes", ""
+        );
+
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        ResponseEntity<Application> response = controller.updateStage(1L, body);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(AppStage.OFFER, newApp.getCurrentStage());
+        assertEquals(LocalDate.now(), newApp.getDateOffer());
+        assertFalse(newApp.isActive());
+        verify(applicationRepository).save(any(Application.class));
+    }
+
+    @Test
+    void application_notesOverwrite() {
+
+        Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
+        newApp.setId(1L);
+
+        when(applicationRepository.findById(1L)).thenReturn(Optional.of(newApp));
+
+        // pass in body object
+        Map<String, String> body = Map.of(
+                "stage","SUBMITTED",
+                "date", LocalDate.now().toString(),
+                "notes", "This note will overwrite the old data."
+        );
+
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        ResponseEntity<Application> response = controller.updateStage(1L, body);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(AppStage.SUBMITTED, newApp.getCurrentStage());
+        assertEquals(LocalDate.now(), newApp.getDateSubmitted());
+        assertEquals("This note will overwrite the old data.", newApp.getNotes());
+        assertTrue(newApp.isActive());
+        verify(applicationRepository).save(any(Application.class));
+    }
+
+    @Test
+    void application_dontOverwrite() {
+
+        Application newApp = buildApp(true, AppStage.SUBMITTED, LocalDate.now());
+        newApp.setId(1L);
+        newApp.setNotes("This should not be overwritten.");
+
+        when(applicationRepository.findById(1L)).thenReturn(Optional.of(newApp));
+
+        // pass in body object
+        Map<String, String> body = Map.of(
+                "stage","SUBMITTED",
+                "date", "",
+                "notes", ""
+        );
+
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        ResponseEntity<Application> response = controller.updateStage(1L, body);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(AppStage.SUBMITTED, newApp.getCurrentStage());
+        assertEquals(LocalDate.now(), newApp.getDateSubmitted());
+        assertEquals("This should not be overwritten.", newApp.getNotes());
         assertTrue(newApp.isActive());
         verify(applicationRepository).save(any(Application.class));
     }
