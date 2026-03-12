@@ -13,8 +13,10 @@ import com.jcarroll95.apptrack.model.Application;
 import com.jcarroll95.apptrack.model.Application.AppStage;
 import com.jcarroll95.apptrack.repository.ApplicationRepository;
 
+import com.jcarroll95.apptrack.repository.PipelineEventRepository;
+import com.jcarroll95.apptrack.model.PipelineEvent;
+
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -29,11 +31,14 @@ class ApplicationControllerTest {
     @Mock
     private ApplicationRepository applicationRepository;
 
+    @Mock
+    private PipelineEventRepository pipelineEventRepository;
+
     private ApplicationController controller;
 
     @BeforeEach
     void setUp() {
-        controller = new ApplicationController(applicationRepository);
+        controller = new ApplicationController(applicationRepository, pipelineEventRepository);
     }
 
     private Application buildApp(boolean active, AppStage stage, LocalDate dateSubmitted) {
@@ -65,6 +70,15 @@ class ApplicationControllerTest {
         assertEquals(AppStage.RECRUITER_RESPONSE, newApp.getCurrentStage());
         assertEquals(LocalDate.now(), newApp.getDateRecruiterResponse());
         assertTrue(newApp.isActive());
+
+
+        ArgumentCaptor<PipelineEvent> eventCaptor = ArgumentCaptor.forClass(PipelineEvent.class);
+        verify(pipelineEventRepository).save(eventCaptor.capture());
+
+        PipelineEvent savedEvent = eventCaptor.getValue();
+        assertEquals(AppStage.SUBMITTED.toString(), savedEvent.getFromStage());
+        assertEquals(AppStage.RECRUITER_RESPONSE.toString(), savedEvent.getToStage());
+
         verify(applicationRepository).save(any(Application.class));
     }
 
@@ -170,4 +184,84 @@ class ApplicationControllerTest {
         verify(applicationRepository).save(any(Application.class));
     }
 
+    @Test
+    void terminal_rejection() {
+        Application newApp = buildApp(true, AppStage.FINAL_ROUND, LocalDate.now());
+        newApp.setId(1L);
+
+        when(applicationRepository.findById(1L)).thenReturn(Optional.of(newApp));
+
+        Map<String, String> body = Map.of(
+                "stage","REJECTED",
+                "date", LocalDate.now().toString(),
+                "notes", ""
+        );
+
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        ResponseEntity<Application> response = controller.updateStage(1L, body);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(AppStage.REJECTED, newApp.getCurrentStage());
+        assertEquals(LocalDate.now(), newApp.getDateRejection());
+        assertFalse(newApp.isActive());
+
+        ArgumentCaptor<PipelineEvent> eventCaptor = ArgumentCaptor.forClass(PipelineEvent.class);
+        verify(pipelineEventRepository).save(eventCaptor.capture());
+
+        PipelineEvent savedEvent = eventCaptor.getValue();
+        assertEquals(AppStage.FINAL_ROUND.toString(), savedEvent.getFromStage());
+        assertEquals(AppStage.REJECTED.toString(), savedEvent.getToStage());
+
+        verify(applicationRepository).save(any(Application.class));
+
+    }
+
+    @Test
+    void terminal_offer() {
+        Application newApp = buildApp(true, AppStage.FINAL_ROUND, LocalDate.now());
+        newApp.setId(1L);
+
+        when(applicationRepository.findById(1L)).thenReturn(Optional.of(newApp));
+
+        Map<String, String> body = Map.of(
+                "stage","OFFER",
+                "date", LocalDate.now().toString(),
+                "notes", ""
+        );
+
+        when(applicationRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
+        ResponseEntity<Application> response = controller.updateStage(1L, body);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(AppStage.OFFER, newApp.getCurrentStage());
+        assertEquals(LocalDate.now(), newApp.getDateOffer());
+        assertFalse(newApp.isActive());
+
+        ArgumentCaptor<PipelineEvent> eventCaptor = ArgumentCaptor.forClass(PipelineEvent.class);
+        verify(pipelineEventRepository).save(eventCaptor.capture());
+
+        PipelineEvent savedEvent = eventCaptor.getValue();
+        assertEquals(AppStage.FINAL_ROUND.toString(), savedEvent.getFromStage());
+        assertEquals(AppStage.OFFER.toString(), savedEvent.getToStage());
+
+        verify(applicationRepository).save(any(Application.class));
+
+    }
+
+    @Test
+    void updateStage_notFound_returns404() {
+        when(applicationRepository.findById(999L)).thenReturn(Optional.empty());
+
+        Map<String, String> body = Map.of(
+                "stage", "RECRUITER_RESPONSE",
+                "date", LocalDate.now().toString(),
+                "notes", ""
+        );
+
+        ResponseEntity<Application> response = controller.updateStage(999L, body);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(applicationRepository, never()).save(any());
+        verify(pipelineEventRepository, never()).save(any());
+    }
 }
