@@ -3,7 +3,7 @@
 
 A lightweight tool for tracking feedback from the hiring pipeline.
 
-![AppTrack Demo](demo.gif)
+![AppTrack Demo](apptrack.gif)
 
 The software engineering hiring process produces outcomes you can observe but not directly explain. Recruiter responses, online assessments, interviews, and rejections are visible. The criteria behind them are not. Some organizations publish guidelines, but it's not clear whether they truly map to outcomes. The only lever I can really pull in this process is visible hiring signal, and I want something better than a spreadsheet to keep track of what works.
 
