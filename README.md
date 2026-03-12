@@ -1,6 +1,10 @@
 
 ## Apptrack: Hiring Pipeline Instrumentation
 
+A lightweight tool for tracking feedback from the hiring pipeline.
+
+![AppTrack Demo](demo.gif)
+
 The software engineering hiring process produces outcomes you can observe but not directly explain. Recruiter responses, online assessments, interviews, and rejections are visible. The criteria behind them are not. Some organizations publish guidelines, but it's not clear whether they truly map to outcomes. The only lever I can really pull in this process is visible hiring signal, and I want something better than a spreadsheet to keep track of what works.
 
 This project models each job application as an instance moving through a state machine. Every pipeline transition is recorded alongside the signals presented to the employer at that time: which resume variant was used, the source channel, whether a referral was involved, and qualitative observations from any human touchpoints.
