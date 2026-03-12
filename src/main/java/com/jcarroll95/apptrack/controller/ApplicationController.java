@@ -2,9 +2,14 @@ package com.jcarroll95.apptrack.controller;
 
 import com.jcarroll95.apptrack.model.Application;
 import com.jcarroll95.apptrack.repository.ApplicationRepository;
+import com.jcarroll95.apptrack.model.PipelineEvent;
+import com.jcarroll95.apptrack.repository.PipelineEventRepository;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,9 +19,12 @@ import java.util.stream.Collectors;
 public class ApplicationController {
 
     private final ApplicationRepository applicationRepository;
+    private final PipelineEventRepository pipelineEventRepository;
 
-    public ApplicationController(ApplicationRepository applicationRepository) {
+    public ApplicationController(ApplicationRepository applicationRepository,
+                                 PipelineEventRepository pipelineEventRepository) {
         this.applicationRepository = applicationRepository;
+        this.pipelineEventRepository = pipelineEventRepository;
     }
 
     @GetMapping
@@ -60,8 +68,17 @@ public class ApplicationController {
                     ? LocalDate.parse(date)
                     : LocalDate.now();
 
+            Application.AppStage fromStage = app.getCurrentStage();
             Application.AppStage newStage = Application.AppStage.valueOf(stage);
             app.setCurrentStage(newStage);
+
+            PipelineEvent event = new PipelineEvent();
+            event.setApplication(app);
+            event.setFromStage(fromStage.toString());
+            event.setToStage(newStage.toString());
+            LocalDateTime pipelineTime = transitionDate.atTime(LocalTime.now());
+            event.setTimestamp(pipelineTime);
+            pipelineEventRepository.save(event);
 
             switch (newStage) {
                 case RECRUITER_RESPONSE -> app.setDateRecruiterResponse(transitionDate);
