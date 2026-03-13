@@ -3,7 +3,7 @@
 
 A lightweight tool for tracking feedback from the hiring pipeline. Built with Spring Boot 4, PostgreSQL, and vanilla JS.
 
-![AppTrack Demo](apptrack.gif)
+![AppTrack Demo](apptrack-2026-03-13.gif)
 
 ### What it tracks
 
