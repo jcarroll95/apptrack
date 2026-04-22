@@ -357,9 +357,6 @@
             cursor: pointer;
         }
         .btn-submit:hover { background: #2a3f6a; }
-
-
-
         .field-row-inline {
             display: flex;
             gap: 8px;
@@ -367,9 +364,50 @@
         .field-row-inline .field-row {
             flex: 1;
         }
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .toast {
+            min-width: 240px;
+            max-width: 360px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            background: #1a1f2e;
+            border: 1px solid #2a3246;
+            color: #e2e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            pointer-events: auto;
+            animation: toast-in 0.2s ease-out;
+        }
+
+        .toast.success { border-left: 3px solid #4ade80; }
+        .toast.error   { border-left: 3px solid #f87171; }
+        .toast.info    { border-left: 3px solid #7c9ef8; }
+
+        .toast.fading { animation: toast-out 0.2s ease-in forwards; }
+
+        @keyframes toast-in {
+            from { opacity: 0; transform: translateX(20px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toast-out {
+            from { opacity: 1; transform: translateX(0); }
+            to   { opacity: 0; transform: translateX(20px); }
+        }
     </style>
 </head>
 <body>
+<div class="toast-container" id="toast-container"></div>
 
 <header>
     <h1>APPTRACK</h1>
@@ -669,6 +707,21 @@
         FINAL_ROUND:        ['OFFER']
     };
 
+    // ─── TOAST ────────────────────────────────────────────────────────
+
+    function toast(message, type = 'info', duration = 3000) {
+        const container = document.getElementById('toast-container');
+        const el = document.createElement('div');
+        el.className = `toast ${type}`;
+        el.textContent = message;
+        container.appendChild(el);
+
+        setTimeout(() => {
+            el.classList.add('fading');
+            el.addEventListener('animationend', () => el.remove(), { once: true });
+        }, duration);
+    }
+
     // ─── DATA LOADING ────────────────────────────────────────────────────────
 
     async function loadData() {
@@ -676,7 +729,10 @@
             const res = await fetch(`${API}/api/applications`);
             allApplications = await res.json();
             render();
-        } catch (e) { console.error('Failed to load applications', e); }
+        } catch (e) {
+            console.error('Failed to load applications', e);
+            toast('Could not load applications', 'error');
+        }
     }
 
     async function loadContacts() {
@@ -686,7 +742,10 @@
             const sel = document.getElementById('app-contact');
             sel.innerHTML = '<option value="">None</option>' +
                 allContacts.map(c => `<option value="${c.id}">${c.name}${c.company ? ' — ' + c.company : ''}</option>`).join('');
-        } catch (e) { console.error('Failed to load contacts', e); }
+        } catch (e) {
+            console.error('Failed to load contacts', e);
+            toast('Could not load contacts', 'error');
+        }
     }
 
     async function loadResumeVariants() {
@@ -697,7 +756,19 @@
             sel.innerHTML = allResumeVariants.map(r =>
                 `<option value="${r.id}">${r.versionLabel}</option>`
             ).join('');
-        } catch (e) { console.error('Failed to load resume variants', e); }
+        } catch (e) {
+            console.error('Failed to load resume variants', e);
+            toast('Could not load resume variants', 'error');
+        }
+    }
+
+    async function refreshAll() {
+        await Promise.all([
+            loadData(),
+            loadCompanies(),
+            loadContacts(),
+            loadResumeVariants()
+        ]);
     }
 
     // ─── COMPANY LOOKUP ───────────────────────────────────────────────────────
@@ -710,7 +781,10 @@
             allCompanies = await res.json();
             const list = document.getElementById('company-list');
             list.innerHTML = allCompanies.map(c => `<option value="${c.name}">`).join('');
-        } catch (e) { console.error('Failed to load companies', e); }
+        } catch (e) {
+            console.error('Failed to load companies', e);
+            toast('Could not load companies', 'error');
+        }
     }
 
     document.getElementById('app-company-name').addEventListener('input', function() {
@@ -735,7 +809,7 @@
         const resumeId = document.getElementById('app-resume').value;
 
         if (!companyName || !title || !dateSubmitted || !resumeId) {
-            alert('Company, role title, resume variant, and date are required.');
+            toast('Company, role title, resume variant, and date are required.', 'error');
             return;
         }
 
@@ -794,14 +868,15 @@
             })
         });
 
+        toast('Application saved', 'success');
         closeModal('modal-app');
         resetAppModal();
-        await loadData();
+        await refreshAll();
     }
 
     async function submitCompany() {
         const name = document.getElementById('co-name').value.trim();
-        if (!name) { alert('Company name is required.'); return; }
+        if (!name) { toast('Company name is required.', 'error'); return; }
 
         await fetch(`${API}/api/companies`, {
             method: 'POST',
@@ -814,14 +889,16 @@
             })
         });
 
+        toast('Company added', 'success');
         closeModal('modal-company');
         document.getElementById('co-name').value = '';
         document.getElementById('co-notes').value = '';
+        await refreshAll();
     }
 
     async function submitContact() {
         const name = document.getElementById('ct-name').value.trim();
-        if (!name) { alert('Contact name is required.'); return; }
+        if (!name) { toast('Contact name is required.', 'error'); return; }
 
         await fetch(`${API}/api/contacts`, {
             method: 'POST',
@@ -835,18 +912,19 @@
             })
         });
 
+        toast('Contact added', 'success');
         closeModal('modal-contact');
         document.getElementById('ct-name').value = '';
         document.getElementById('ct-company').value = '';
         document.getElementById('ct-email').value = '';
         document.getElementById('ct-phone').value = '';
         document.getElementById('ct-notes').value = '';
-        await loadContacts();
+        await refreshAll();
     }
 
     async function submitResume() {
         const label = document.getElementById('rv-label').value.trim();
-        if (!label) { alert('Version label is required.'); return; }
+        if (!label) { toast('Version label is required.', 'error'); return; }
 
         await fetch(`${API}/api/resumevariants`, {
             method: 'POST',
@@ -859,11 +937,12 @@
             })
         });
 
+        toast('Resume variant added', 'success');
         closeModal('modal-resume');
         document.getElementById('rv-label').value = '';
         document.getElementById('rv-summary').value = '';
         document.getElementById('rv-url').value = '';
-        await loadResumeVariants();
+        await refreshAll();
     }
 
     // ─── MODAL HELPERS ────────────────────────────────────────────────────────
@@ -934,8 +1013,9 @@
             })
         });
 
+        toast('Stage updated', 'success');
         expandedAppId = null;
-        await loadData();
+        await refreshAll();
     }
 
     function toggleExpand(appId) {
@@ -1098,10 +1178,7 @@
 
     // ─── INIT ─────────────────────────────────────────────────────────────────
 
-    loadCompanies();
-    loadResumeVariants();
-    loadContacts();
-    loadData();
+    refreshAll();
 
 </script>
 </body>
