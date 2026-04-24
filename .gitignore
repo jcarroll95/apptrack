@@ -1,7 +1,11 @@
 src/main/resources/application.properties
 
 HELP.md
-target/
+
+# Frontend
+frontend/node_modules
+frontend/dist
+frontend/node
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

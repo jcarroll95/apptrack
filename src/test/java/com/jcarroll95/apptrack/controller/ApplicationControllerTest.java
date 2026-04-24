@@ -12,7 +12,6 @@ import org.mockito.ArgumentCaptor;
 import com.jcarroll95.apptrack.model.Application;
 import com.jcarroll95.apptrack.model.Application.AppStage;
 import com.jcarroll95.apptrack.repository.ApplicationRepository;
-
 import com.jcarroll95.apptrack.repository.PipelineEventRepository;
 import com.jcarroll95.apptrack.model.PipelineEvent;
 

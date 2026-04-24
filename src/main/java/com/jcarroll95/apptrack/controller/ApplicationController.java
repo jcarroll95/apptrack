@@ -76,6 +76,7 @@ public class ApplicationController {
             event.setApplication(app);
             event.setFromStage(fromStage.toString());
             event.setToStage(newStage.toString());
+            event.setOccurrenceIndex(0); // Add default value
             LocalDateTime pipelineTime = transitionDate.atTime(LocalTime.now());
             event.setTimestamp(pipelineTime);
             pipelineEventRepository.save(event);
