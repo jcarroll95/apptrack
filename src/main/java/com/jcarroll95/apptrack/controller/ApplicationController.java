@@ -6,6 +6,7 @@ import com.jcarroll95.apptrack.model.PipelineEvent;
 import com.jcarroll95.apptrack.repository.PipelineEventRepository;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,6 +55,7 @@ public class ApplicationController {
                 ));
     }
 
+    @Transactional
     @PatchMapping("/{id}/stage")
     public ResponseEntity<Application> updateStage(
             @PathVariable Long id,

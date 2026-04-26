@@ -40,5 +40,8 @@ export const api = {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ stage, notes, date })
-  }).then(res => res.json()),
+  }).then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }),
 };
