@@ -55,6 +55,10 @@ public class ResumeVariantController {
             if (body.containsKey("fileUrl"))
                 rv.setFileUrl(body.get("fileUrl") != null
                     ? (String) body.get("fileUrl") : null);
+            if (body.containsKey("deleted"))
+                rv.setDeleted((Boolean) body.get("deleted"));
+            if (body.containsKey("contentText"))
+                rv.setContentText(body.get("contentText") != null ? (String) body.get("contentText") : null);
             return ResponseEntity.ok(resumeVariantRepository.save(rv));
         }).orElse(ResponseEntity.notFound().build());
     }

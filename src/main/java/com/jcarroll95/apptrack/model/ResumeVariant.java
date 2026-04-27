@@ -33,4 +33,8 @@ public class ResumeVariant {
 
     private String fileUrl;
 
+    private boolean deleted = false;
+
+    @Column(columnDefinition = "TEXT")
+    private String contentText;
 }

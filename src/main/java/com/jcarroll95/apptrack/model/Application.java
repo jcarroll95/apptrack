@@ -109,4 +109,6 @@ public class Application {
     private boolean active;
 
     private String alignmentNotes;
+
+    private boolean deleted = false;
 }

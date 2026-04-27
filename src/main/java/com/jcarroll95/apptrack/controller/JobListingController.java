@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/joblistings")
@@ -40,6 +42,23 @@ public class JobListingController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping("/snapshot")
+    public ResponseEntity<Object> snapshot(@RequestBody Map<String, String> body) {
+        String url  = body.get("url");
+        String text = body.get("text");
+        if (url == null || text == null) return ResponseEntity.badRequest().build();
+
+        Optional<JobListing> found = jobListingRepository.findByUrl(url);
+        if (found.isPresent()) {
+            JobListing jl = found.get();
+            jl.setSnapshotText(text);
+            jl.setSnapshotDate(LocalDateTime.now());
+            return ResponseEntity.ok(jobListingRepository.save(jl));
+        }
+        return ResponseEntity.status(404).body(Map.of("receivedText", text));
+    }
+
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<JobListing> update(
@@ -57,6 +76,8 @@ public class JobListingController {
                 Long cId = ((Number) body.get("companyId")).longValue();
                 companyRepository.findById(cId).ifPresent(jl::setCompany);
             }
+            if (body.containsKey("snapshotText"))
+                jl.setSnapshotText(body.get("snapshotText") != null ? (String) body.get("snapshotText") : null);
             return ResponseEntity.ok(jobListingRepository.save(jl));
         }).orElse(ResponseEntity.notFound().build());
     }

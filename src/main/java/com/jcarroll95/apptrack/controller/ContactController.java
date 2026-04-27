@@ -53,6 +53,8 @@ public class ContactController {
                 c.setPhone(body.get("phone") != null ? (String) body.get("phone") : null);
             if (body.containsKey("notes"))
                 c.setNotes(body.get("notes") != null ? (String) body.get("notes") : null);
+            if (body.containsKey("deleted"))
+                c.setDeleted((Boolean) body.get("deleted"));
             return ResponseEntity.ok(contactRepository.save(c));
         }).orElse(ResponseEntity.notFound().build());
     }

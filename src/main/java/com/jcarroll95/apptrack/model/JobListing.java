@@ -3,6 +3,7 @@ package com.jcarroll95.apptrack.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "joblistings")
@@ -68,4 +69,9 @@ public class JobListing {
 
     @Column(columnDefinition = "TEXT", nullable = true)
     private String descriptionNotes;
+
+    @Column(columnDefinition = "TEXT")
+    private String snapshotText;
+
+    private LocalDateTime snapshotDate;
 }

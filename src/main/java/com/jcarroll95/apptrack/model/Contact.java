@@ -27,4 +27,5 @@ public class Contact {
 
     private String company;
 
+    private boolean deleted = false;
 }

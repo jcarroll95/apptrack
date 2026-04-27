@@ -116,6 +116,66 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const softDeleteApplication = async (id) => {
+    try {
+      await api.updateApplication(id, { deleted: true });
+      triggerToast('Application deleted', 'success');
+      await refreshAll();
+    } catch (e) {
+      triggerToast('Failed to delete application', 'error');
+    }
+  };
+
+  const restoreApplication = async (id) => {
+    try {
+      await api.updateApplication(id, { deleted: false });
+      triggerToast('Application restored', 'success');
+      await refreshAll();
+    } catch (e) {
+      triggerToast('Failed to restore application', 'error');
+    }
+  };
+
+  const softDeleteResumeVariant = async (id) => {
+    try {
+      await api.updateResumeVariant(id, { deleted: true });
+      triggerToast('Resume variant deleted', 'success');
+      await refreshAll();
+    } catch (e) {
+      triggerToast('Failed to delete resume variant', 'error');
+    }
+  };
+
+  const restoreResumeVariant = async (id) => {
+    try {
+      await api.updateResumeVariant(id, { deleted: false });
+      triggerToast('Resume variant restored', 'success');
+      await refreshAll();
+    } catch (e) {
+      triggerToast('Failed to restore resume variant', 'error');
+    }
+  };
+
+  const softDeleteContact = async (id) => {
+    try {
+      await api.updateContact(id, { deleted: true });
+      triggerToast('Contact deleted', 'success');
+      await refreshAll();
+    } catch (e) {
+      triggerToast('Failed to delete contact', 'error');
+    }
+  };
+
+  const restoreContact = async (id) => {
+    try {
+      await api.updateContact(id, { deleted: false });
+      triggerToast('Contact restored', 'success');
+      await refreshAll();
+    } catch (e) {
+      triggerToast('Failed to restore contact', 'error');
+    }
+  };
+
   const updateContact = async (id, data) => {
     try {
       await api.updateContact(id, data);
@@ -152,7 +212,10 @@ export const AppProvider = ({ children }) => {
       applications, companies, contacts, resumeVariants,
       toasts, loading, activeDimension, setActiveDimension,
       triggerToast, refreshAll, createFullApplication, transitionStage,
-      updateApplication, updateJobListing, updateResumeVariant, updateContact
+      updateApplication, updateJobListing,
+      updateResumeVariant, softDeleteResumeVariant, restoreResumeVariant,
+      updateContact, softDeleteContact, restoreContact,
+      softDeleteApplication, restoreApplication
     }}>
       {children}
     </AppContext.Provider>

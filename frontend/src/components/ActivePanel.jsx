@@ -10,19 +10,26 @@ const STAGE_COLOR = {
 };
 
 const ActivePanel = () => {
-  const { applications, transitionStage } = useAppContext();
+  const { applications, transitionStage, softDeleteApplication, restoreApplication } = useAppContext();
   const [expandedAppId, setExpandedAppId] = useState(null);
   const [editingApp, setEditingApp] = useState(null);
   const [transitioningId, setTransitioningId] = useState(null);
   const [note, setNote] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+  const [showDeleted, setShowDeleted] = useState(false);
 
-  const activeApps = applications
+  const notDeleted = applications.filter(app => !app.deleted);
+
+  const activeApps = notDeleted
     .filter(app => app.active && !TERMINAL.includes(app.currentStage))
     .sort((a, b) => new Date(b.dateSubmitted) - new Date(a.dateSubmitted));
 
-  const closedApps = applications
+  const closedApps = notDeleted
     .filter(app => !app.active || TERMINAL.includes(app.currentStage))
+    .sort((a, b) => new Date(b.dateSubmitted) - new Date(a.dateSubmitted));
+
+  const deletedApps = applications
+    .filter(app => app.deleted)
     .sort((a, b) => new Date(b.dateSubmitted) - new Date(a.dateSubmitted));
 
   const toggleExpand = (id) => {
@@ -66,10 +73,16 @@ const ActivePanel = () => {
           <div className="app-role">{role}</div>
           <div className="app-stage" style={{ color: stageColor }}>{stageLabel}</div>
           <div className={`app-age ${ageClass}`}>{daysAgo !== null ? daysAgo + 'd' : '—'}</div>
-          <button
-            className="edit-app-btn"
-            onClick={(e) => { e.stopPropagation(); setEditingApp(app); }}
-          >✎</button>
+          <div className="row-actions">
+            <button
+              className="edit-app-btn"
+              onClick={(e) => { e.stopPropagation(); setEditingApp(app); }}
+            >✎</button>
+            <button
+              className="delete-row-btn"
+              onClick={(e) => { e.stopPropagation(); softDeleteApplication(app.id); }}
+            >🗑</button>
+          </div>
         </div>
         <div className={`app-expand ${isExpanded ? 'open' : ''}`}>
           <div className="expand-current-stage">Current stage: <span style={{ color: stageColor }}>{stageLabel}</span></div>
@@ -129,9 +142,20 @@ const ActivePanel = () => {
     </div>
   );
 
+  const BOOKMARKLET = `javascript:(function(){var text=document.body.innerText;var url=window.location.href;fetch('http://localhost:8080/api/joblistings/snapshot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:url,text:text})}).then(function(r){alert(r.ok?'Captured!':'No matching listing — paste into the Job Description field in the edit modal.');}).catch(function(){navigator.clipboard.writeText(text).then(function(){alert('Copied to clipboard — paste into the Job Description field in the edit modal.');}).catch(function(){alert('Could not reach AppTrack or copy to clipboard.');});});})();`;
+
   return (
     <div className="panel">
-      <div className="panel-title">Active Applications</div>
+      <div className="panel-title-row">
+        <div className="panel-title">Active Applications</div>
+        <div className="bookmarklet-hint">
+          <a href={BOOKMARKLET} className="bookmarklet-link" onClick={(e) => e.preventDefault()}>
+            Capture to AppTrack
+          </a>
+          <span className="bookmarklet-hint-text"> ← drag to bookmarks bar</span>
+        </div>
+      </div>
+
       <div id="active-rows">
         {activeApps.length === 0 ? (
           <div className="empty-state">No active applications</div>
@@ -145,14 +169,35 @@ const ActivePanel = () => {
 
       {closedApps.length > 0 && (
         <>
-          <div className="closed-separator">
-            <span>Closed</span>
-          </div>
+          <div className="closed-separator"><span>Closed</span></div>
           <div id="closed-rows">
             {columnHeaders}
             {closedApps.map(renderRow)}
           </div>
         </>
+      )}
+
+      {deletedApps.length > 0 && (
+        <div className="recover-section">
+          <button className="recover-toggle" onClick={() => setShowDeleted(v => !v)}>
+            {showDeleted ? '▾' : '▸'} Recover deleted ({deletedApps.length})
+          </button>
+          {showDeleted && (
+            <div className="recover-list">
+              {deletedApps.map(app => (
+                <div key={app.id} className="recover-row">
+                  <span className="recover-label">
+                    {app.jobListing?.company?.name ?? 'Unknown'} — {app.jobListing?.title ?? 'Unknown Role'}
+                    <span style={{ color: '#64748b', marginLeft: 8, fontSize: 11 }}>
+                      {STAGE_LABELS[app.currentStage] ?? app.currentStage}
+                    </span>
+                  </span>
+                  <button className="restore-btn" onClick={() => restoreApplication(app.id)}>Restore</button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       {editingApp && (

@@ -91,6 +91,8 @@ public class ApplicationController {
                 if (cId == null) app.setContact(null);
                 else contactRepository.findById(((Number) cId).longValue()).ifPresent(app::setContact);
             }
+            if (body.containsKey("deleted"))
+                app.setDeleted((Boolean) body.get("deleted"));
             return ResponseEntity.ok(applicationRepository.save(app));
         }).orElse(ResponseEntity.notFound().build());
     }
