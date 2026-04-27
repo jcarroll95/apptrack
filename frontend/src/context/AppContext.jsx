@@ -105,11 +105,54 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const updateApplication = async (id, data) => {
+    try {
+      await api.updateApplication(id, data);
+      triggerToast('Application updated', 'success');
+      await refreshAll();
+    } catch (e) {
+      console.error('Failed to update application', e);
+      triggerToast('Failed to update application', 'error');
+    }
+  };
+
+  const updateContact = async (id, data) => {
+    try {
+      await api.updateContact(id, data);
+      triggerToast('Contact updated', 'success');
+      await refreshAll();
+    } catch (e) {
+      triggerToast('Failed to update contact', 'error');
+    }
+  };
+
+  const updateResumeVariant = async (id, data) => {
+    try {
+      await api.updateResumeVariant(id, data);
+      triggerToast('Resume variant updated', 'success');
+      await refreshAll();
+    } catch (e) {
+      triggerToast('Failed to update resume variant', 'error');
+    }
+  };
+
+  const updateJobListing = async (id, data) => {
+    try {
+      await api.updateJobListing(id, data);
+      await refreshAll();
+    } catch (e) {
+      console.error('Failed to update job listing', e);
+      triggerToast('Failed to update job listing', 'error');
+      throw e;
+    }
+  };
+
   return (
     <AppContext.Provider value={{
       applications, companies, contacts, resumeVariants,
       toasts, loading, activeDimension, setActiveDimension,
-      triggerToast, refreshAll, createFullApplication, transitionStage
+      triggerToast, refreshAll, createFullApplication, transitionStage,
+      updateApplication, updateJobListing, updateResumeVariant, updateContact
     }}>
       {children}
     </AppContext.Provider>

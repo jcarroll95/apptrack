@@ -36,6 +36,42 @@ export const api = {
     body: JSON.stringify(data)
   }).then(res => res.json()),
   
+  updateContact: (id, data) => fetch(`${API}/api/contacts/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }),
+
+  updateResumeVariant: (id, data) => fetch(`${API}/api/resumevariants/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }),
+
+  updateJobListing: (id, data) => fetch(`${API}/api/joblistings/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }),
+
+  updateApplication: (id, data) => fetch(`${API}/api/applications/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(res => {
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }),
+
   transitionStage: (id, stage, notes = '', date = '') => fetch(`${API}/api/applications/${id}/stage`, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },

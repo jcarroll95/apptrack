@@ -1,9 +1,13 @@
 package com.jcarroll95.apptrack.controller;
 
 import com.jcarroll95.apptrack.model.Application;
-import com.jcarroll95.apptrack.repository.ApplicationRepository;
+import com.jcarroll95.apptrack.model.Contact;
 import com.jcarroll95.apptrack.model.PipelineEvent;
+import com.jcarroll95.apptrack.model.ResumeVariant;
+import com.jcarroll95.apptrack.repository.ApplicationRepository;
+import com.jcarroll95.apptrack.repository.ContactRepository;
 import com.jcarroll95.apptrack.repository.PipelineEventRepository;
+import com.jcarroll95.apptrack.repository.ResumeVariantRepository;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +25,17 @@ public class ApplicationController {
 
     private final ApplicationRepository applicationRepository;
     private final PipelineEventRepository pipelineEventRepository;
+    private final ResumeVariantRepository resumeVariantRepository;
+    private final ContactRepository contactRepository;
 
     public ApplicationController(ApplicationRepository applicationRepository,
-                                 PipelineEventRepository pipelineEventRepository) {
+                                 PipelineEventRepository pipelineEventRepository,
+                                 ResumeVariantRepository resumeVariantRepository,
+                                 ContactRepository contactRepository) {
         this.applicationRepository = applicationRepository;
         this.pipelineEventRepository = pipelineEventRepository;
+        this.resumeVariantRepository = resumeVariantRepository;
+        this.contactRepository = contactRepository;
     }
 
     @GetMapping
@@ -53,6 +63,36 @@ public class ApplicationController {
                         a -> a.getCurrentStage() != null ? a.getCurrentStage().toString() : "UNKNOWN",
                         Collectors.counting()
                 ));
+    }
+
+    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity<Application> update(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> body) {
+
+        return applicationRepository.findById(id).map(app -> {
+            if (body.containsKey("notes"))
+                app.setNotes((String) body.get("notes"));
+            if (body.containsKey("alignmentNotes"))
+                app.setAlignmentNotes((String) body.get("alignmentNotes"));
+            if (body.containsKey("referred"))
+                app.setReferred((Boolean) body.get("referred"));
+            if (body.containsKey("sourceChannel") && body.get("sourceChannel") != null)
+                app.setSourceChannel(Application.SourceType.valueOf((String) body.get("sourceChannel")));
+            if (body.containsKey("dateSubmitted") && body.get("dateSubmitted") != null)
+                app.setDateSubmitted(LocalDate.parse((String) body.get("dateSubmitted")));
+            if (body.containsKey("resumeVariantId") && body.get("resumeVariantId") != null) {
+                Long rvId = ((Number) body.get("resumeVariantId")).longValue();
+                resumeVariantRepository.findById(rvId).ifPresent(app::setResumeVariant);
+            }
+            if (body.containsKey("contactId")) {
+                Object cId = body.get("contactId");
+                if (cId == null) app.setContact(null);
+                else contactRepository.findById(((Number) cId).longValue()).ifPresent(app::setContact);
+            }
+            return ResponseEntity.ok(applicationRepository.save(app));
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @Transactional

@@ -1,5 +1,7 @@
 package com.jcarroll95.apptrack.controller;
 
+import com.jcarroll95.apptrack.repository.ContactRepository;
+import com.jcarroll95.apptrack.repository.ResumeVariantRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,11 +35,17 @@ class ApplicationControllerTest {
     @Mock
     private PipelineEventRepository pipelineEventRepository;
 
+    @Mock
+    private ResumeVariantRepository resumeVariantRepository;
+
+    @Mock
+    private ContactRepository contactRepository;
+
     private ApplicationController controller;
 
     @BeforeEach
     void setUp() {
-        controller = new ApplicationController(applicationRepository, pipelineEventRepository);
+        controller = new ApplicationController(applicationRepository, pipelineEventRepository, resumeVariantRepository, contactRepository);
     }
 
     private Application buildApp(boolean active, AppStage stage, LocalDate dateSubmitted) {

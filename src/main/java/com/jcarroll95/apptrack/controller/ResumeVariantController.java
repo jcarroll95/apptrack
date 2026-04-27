@@ -3,9 +3,12 @@ package com.jcarroll95.apptrack.controller;
 import com.jcarroll95.apptrack.model.ResumeVariant;
 import com.jcarroll95.apptrack.repository.ResumeVariantRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/resumevariants")
@@ -34,5 +37,25 @@ public class ResumeVariantController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @Transactional
+    @PutMapping("/{id}")
+    public ResponseEntity<ResumeVariant> update(
+            @PathVariable Long id,
+            @RequestBody Map<String, Object> body) {
 
+        return resumeVariantRepository.findById(id).map(rv -> {
+            if (body.containsKey("versionLabel") && body.get("versionLabel") != null)
+                rv.setVersionLabel((String) body.get("versionLabel"));
+            if (body.containsKey("dateCreated"))
+                rv.setDateCreated(body.get("dateCreated") != null
+                    ? LocalDate.parse((String) body.get("dateCreated")) : null);
+            if (body.containsKey("changeSummary"))
+                rv.setChangeSummary(body.get("changeSummary") != null
+                    ? (String) body.get("changeSummary") : null);
+            if (body.containsKey("fileUrl"))
+                rv.setFileUrl(body.get("fileUrl") != null
+                    ? (String) body.get("fileUrl") : null);
+            return ResponseEntity.ok(resumeVariantRepository.save(rv));
+        }).orElse(ResponseEntity.notFound().build());
+    }
 }

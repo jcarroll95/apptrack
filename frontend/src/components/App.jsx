@@ -3,6 +3,8 @@ import { useAppContext } from '../context/AppContext';
 import AppHeader from './AppHeader';
 import CohortPanel from './CohortPanel';
 import ActivePanel from './ActivePanel';
+import ResumesPanel from './ResumesPanel';
+import ContactsPanel from './ContactsPanel';
 import ToastContainer from './ToastContainer';
 import ApplicationModal from './ApplicationModal';
 import CompanyModal from './CompanyModal';
@@ -59,17 +61,37 @@ const App = () => {
         >
           Role Type
         </button>
-        <button 
+        <button
           className={`cohort-btn ${activeDimension === 'channel' ? 'active' : ''}`}
           onClick={() => setActiveDimension('channel')}
         >
           Channel
         </button>
+        <button
+          className={`cohort-btn ${activeDimension === 'applications' ? 'active' : ''}`}
+          onClick={() => setActiveDimension('applications')}
+        >
+          Applications
+        </button>
+        <button
+          className={`cohort-btn ${activeDimension === 'resumes' ? 'active' : ''}`}
+          onClick={() => setActiveDimension('resumes')}
+        >
+          Resumes
+        </button>
+        <button
+          className={`cohort-btn ${activeDimension === 'contacts' ? 'active' : ''}`}
+          onClick={() => setActiveDimension('contacts')}
+        >
+          Contacts
+        </button>
       </div>
 
       <main className="main">
-        <CohortPanel />
-        <ActivePanel />
+        {activeDimension === 'applications' ? <ActivePanel />
+          : activeDimension === 'resumes' ? <ResumesPanel />
+          : activeDimension === 'contacts' ? <ContactsPanel />
+          : <CohortPanel />}
       </main>
 
       <ToastContainer />
